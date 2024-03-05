@@ -6,11 +6,14 @@ on:
       branch_to_deploy:
         description: 'Branch to deploy to UAT'
         required: true
+        type: string
       deploy_uat:
         description: 'Whether to deploy to UAT or not'
         required: true
+        type: boolean
       runs_on:
         required: true
+        type: string
 
 jobs:
   build:
@@ -50,7 +53,7 @@ jobs:
   deploy-uat:
     needs: [build, test]
     runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
-    if: ${{ inputs.deploy_uat == 'true' }}
+    if: ${{ inputs.deploy_uat == true }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
