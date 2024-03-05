@@ -17,7 +17,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
     outputs:
       artifact_name: ${{ steps.artifact.outputs.name}}
       artifact_path: ${{ steps.artifact.outputs.path }}
@@ -41,7 +41,7 @@ jobs:
           echo "path=hello.txt" >> $GITHUB_OUTPUT
       
   test:
-    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs:
 
   deploy-uat:
     needs: [build, test]
-    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
     if: ${{ inputs.deploy_uat == true }}
     steps:
       - name: Checkout Repository
