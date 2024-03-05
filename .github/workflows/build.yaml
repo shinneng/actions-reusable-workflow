@@ -1,0 +1,57 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      branch_to_deploy:
+        description: 'Branch to deploy to UAT'
+        required: true
+      deploy_uat:
+        description: 'Whether to deploy to UAT or not'
+        required: true
+      runs_on:
+        required: true
+
+jobs:
+  build:
+    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: build artifact
+        run: echo "Hello World" > hello.txt
+      
+      - name: Archive build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: hello.txt
+
+      # Output artifact name and path
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "::set-output name=artifact_name::my-artifact"
+          echo "::set-output name=artifact_path::hello.txt"
+
+  test:
+    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Running tests
+        run: echo "this is a test"
+
+      # Add test steps here
+
+  deploy-uat:
+    needs: [build, test]
+    runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    if: ${{ inputs.deploy_uat == 'true' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to UAT
+        run: echo "branch to deploy ${{ inputs.branch_to_deploy }}"
