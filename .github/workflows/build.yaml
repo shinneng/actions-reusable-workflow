@@ -15,6 +15,9 @@ on:
 jobs:
   build:
     runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
+    outputs:
+      artifact_name: ${{ steps.artifact.outputs.name}}
+      artifact_path: ${{ steps.artifact.outputs.path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -29,12 +32,11 @@ jobs:
           path: hello.txt
 
       # Output artifact name and path
-      - name: Set outputs
-        id: set-outputs
+      - id: artifact
         run: |
-          echo "::set-output name=artifact_name::my-artifact"
-          echo "::set-output name=artifact_path::hello.txt"
-
+          echo "name=my-artifact" >> $GITHUB_OUTPUT
+          echo "path=hello.txt" >> $GITHUB_OUTPUT
+      
   test:
     runs-on: ${{ inputs.runs-on }} # You can define the runs-on as an input or hardcode it as needed
     steps:
