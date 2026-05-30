@@ -7,7 +7,10 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  # Renovate uses the GitHub API and does not strictly require a local checkout.
+  # Add `contents: write` in case you want the runner to perform git-based pushes
+  # (not required for the API-driven Renovate action).
+  contents: write
   pull-requests: write
 
 jobs:
@@ -15,8 +18,11 @@ jobs:
     name: Run Renovate
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository (optional)
+        uses: actions/checkout@v6
+
       - name: Run renovate
-        uses: renovatebot/renovate@v33
+        uses: renovatebot/github-action@v46.1.14
         with:
           # Use the default GITHUB_TOKEN to create PRs
           token: ${{ secrets.GITHUB_TOKEN }}
