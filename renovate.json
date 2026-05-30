@@ -1,0 +1,15 @@
+{
+  "extends": ["config:base"],
+  "enabledManagers": ["dockerfile"],
+  "packageRules": [
+    {
+      "managers": ["dockerfile"],
+      "matchManagers": ["dockerfile"],
+      "matchPackagePatterns": ["^.*$"],
+      "schedule": ["at any time"]
+    }
+  ],
+  "timezone": "UTC",
+  "labels": ["renovate"],
+  "prConcurrentLimit": 5
+}

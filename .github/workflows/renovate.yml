@@ -1,0 +1,22 @@
+name: Renovate
+
+on:
+  schedule:
+    # Run once per day; adjust cron as needed (UTC)
+    - cron: '0 1 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  renovate:
+    name: Run Renovate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run renovate
+        uses: renovatebot/renovate@v33
+        with:
+          # Use the default GITHUB_TOKEN to create PRs
+          token: ${{ secrets.GITHUB_TOKEN }}
