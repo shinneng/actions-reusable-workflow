@@ -26,3 +26,4 @@ jobs:
         with:
           # Use the default GITHUB_TOKEN to create PRs
           token: ${{ secrets.GITHUB_TOKEN }}
+          renovate-repositories: ${{ github.repository }}
