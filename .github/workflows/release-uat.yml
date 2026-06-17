@@ -12,28 +12,12 @@ jobs:
         - name: approval to proceed with UAT deployment
           run: echo "Waiting for approval to deploy to UAT environment..."
         
-    validate:
+    release:
         needs: approval
-        uses: ./.github/workflows/validate.yml
-        
-    security-scan:
-        needs: approval
-        uses: ./.github/workflows/trivy-scan.yml
-        
-    lint:
-        needs: approval
-        uses: ./.github/workflows/lint.yml
-
-    sbom:
-        needs: approval
-        uses: ./.github/workflows/generate_sbom.yml
-
-    build:
-        needs: [approval, validate, security-scan, lint, sbom]
-        uses: ./.github/workflows/build.yml
+        uses: ./.github/workflows/release.yml
 
     uat-deploy-status:
-        needs: build
+        needs: release
         environment: uat
         runs-on: ubuntu-latest
         steps:

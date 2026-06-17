@@ -1,0 +1,20 @@
+name: "Release Workflow"
+on:
+  workflow_call:
+
+jobs:        
+    validate:
+        uses: ./.github/workflows/validate.yml
+        
+    security-scan:
+        uses: ./.github/workflows/trivy-scan.yml
+        
+    lint:
+        uses: ./.github/workflows/lint.yml
+
+    sbom:
+        uses: ./.github/workflows/generate_sbom.yml
+
+    build:
+        needs: [validate, security-scan, lint, sbom]
+        uses: ./.github/workflows/build.yml
