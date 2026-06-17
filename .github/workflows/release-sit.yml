@@ -1,0 +1,42 @@
+name: "1. Release to SIT"
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+    approval:
+        runs-on: ubuntu-latest
+        environment: sit-approval
+        steps:
+        - name: approval to proceed with SIT deployment
+          run: echo "Waiting for approval to deploy to SIT environment..."
+            
+    validate:
+        needs: approval
+        uses: ./.github/workflows/validate.yml
+        
+    security-scan:
+        needs: approval
+        uses: ./.github/workflows/security-scan.yml
+        
+    lint:
+        needs: approval
+        uses: ./.github/workflows/lint.yml
+
+    sbom:
+        needs: approval
+        uses: ./.github/workflows/generate_sbom.yml
+
+    build:
+        needs: [approval, validate, security-scan, lint, sbom]
+        uses: ./.github/workflows/build.yml
+
+    sit-deploy-status:
+        needs: build
+        environment: sit
+        runs-on: ubuntu-latest
+        steps:
+        - name: SIT deployment
+          run: echo "Deploy to SIT environment completed successfully. Please proceed with testing."

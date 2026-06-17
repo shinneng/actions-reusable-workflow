@@ -1,0 +1,40 @@
+name: release flow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Deployment environment (e.g. production, staging)'
+        required: true
+        type: string
+      platform:
+        description: 'Deployment platform (e.g. linux, windows, macos)'
+        required: true
+        type: string
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+    with:
+        environment: ${{ inputs.environment }}
+        platform: ${{ inputs.platform }}
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+        environment: ${{ inputs.environment }}
+        platform: ${{ inputs.platform }}
+  lint:
+    uses: ./.github/workflows/lint.yml
+    with:
+        environment: ${{ inputs.environment }}
+        platform: ${{ inputs.platform }}
+  trivy-scan:
+    uses: ./.github/workflows/trivy-scan.yml
+    with:
+        environment: ${{ inputs.environment }}
+        platform: ${{ inputs.platform }}
+  generate-sbom:
+    uses: ./.github/workflows/generate_sbom.yml
+    with:
+        environment: ${{ inputs.environment }}
+        platform: ${{ inputs.platform }}

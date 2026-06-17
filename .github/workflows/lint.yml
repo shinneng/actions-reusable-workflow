@@ -1,0 +1,13 @@
+name: Lint
+
+on:
+  workflow_call:
+        
+jobs:
+    code-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+            - name: Run Code Lint
+              uses: super-linter/super-linter@v5

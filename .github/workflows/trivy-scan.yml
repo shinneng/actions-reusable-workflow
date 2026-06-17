@@ -1,0 +1,35 @@
+name: Trivy Scan
+
+on:
+    workflow_call:
+        inputs:
+            trivy-format:
+                description: 'Trivy output format (e.g. table, json, template)'
+                required: false
+                type: string
+                default: 'table'
+            trivy-output-filename:
+                description: 'Output filename for the Trivy scan results'
+                required: false
+                type: string
+                default: 'trivy-scan-results.txt'
+
+jobs:
+    trivy-scan:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+        
+            - name: Run Trivy vulnerability scanner in fs mode
+              uses: aquasecurity/trivy-action@v0.36.0
+              with:
+                scan-type: 'fs'
+                scan-ref: '.'
+                format: ${{ inputs['trivy-format'] || 'table' }}
+                output: ${{ inputs['trivy-output-filename'] || 'trivy-scan-results.txt' }}
+
+            - name: Upload Trivy Scan Results Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: trivy-scan-results

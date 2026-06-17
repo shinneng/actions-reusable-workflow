@@ -1,0 +1,16 @@
+name: Validate
+on:
+  workflow_call:
+    
+    
+jobs:
+  validate:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Validate
+        run: |
+          echo "Validate branch: ${{ github.ref }}"
