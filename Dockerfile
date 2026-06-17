@@ -8,7 +8,11 @@ FROM ghcr.io/actions/actions-runner:2.329.0
 # Switch to root to perform software installation
 USER root
 
+# FIX DL4006: Force all RUN commands to fail if ANY command in a pipe fails
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Clean apt cache and install prerequisites + official GitHub CLI
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
