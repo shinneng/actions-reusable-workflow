@@ -19,7 +19,7 @@ jobs:
         
     security-scan:
         needs: approval
-        uses: ./.github/workflows/security-scan.yml
+        uses: ./.github/workflows/trivy-scan.yml
         
     lint:
         needs: approval
