@@ -1,0 +1,41 @@
+name: "2. Release to UAT"
+on:
+  deployment_status:
+    
+jobs:
+    # Only run if the triggering event was a SUCCESSFUL deployment to the 'sit' environment
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'sit'
+    approval:
+        runs-on: ubuntu-latest
+        environment: uat-approval
+        steps:
+        - name: approval to proceed with UAT deployment
+          run: echo "Waiting for approval to deploy to UAT environment..."
+
+    validate:
+        needs: approval
+        uses: ./.github/workflows/validate.yml
+        
+    security-scan:
+        needs: approval
+        uses: ./.github/workflows/trivy-scan.yml
+        
+    lint:
+        needs: approval
+        uses: ./.github/workflows/lint.yml
+
+    sbom:
+        needs: approval
+        uses: ./.github/workflows/generate_sbom.yml
+
+    build:
+        needs: [approval, validate, security-scan, lint, sbom]
+        uses: ./.github/workflows/build.yml
+
+    sit-deploy-status:
+        needs: build
+        environment: sit
+        runs-on: ubuntu-latest
+        steps:
+        - name: SIT deployment
+          run: echo "Deploy to SIT environment completed successfully. Please proceed with testing."
