@@ -2,6 +2,7 @@ name: Lint
 
 on:
   workflow_call:
+  workflow_dispatch:
         
 jobs:
     code-lint:
@@ -9,8 +10,14 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v6
-            - name: Run Code Lint
-              uses: super-linter/super-linter@v5
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                DISABLE_ERRORS: true
+             
+            - name: Check GitHub Actions
+              uses: rhysd/actionlint-action@v1
+
+            - name: Check Dockerfile
+              uses: hadolint/hadolint-action@v3.1.0
+              with:
+                dockerfile: Dockerfile
+
+            - name: Validate Renovate Config
+              run: npx --yes renovate-config-validator
