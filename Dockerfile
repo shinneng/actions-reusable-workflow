@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy binaries into the global system path from the multi-stage builds
 COPY --from=k8s-source /usr/local/bin/kubectl /usr/local/bin/kubectl
 COPY --from=k8s-source /usr/local/bin/kustomize /usr/local/bin/kustomize
-COPY --from=flux-source /flux /usr/local/bin/flux
+COPY --from=flux-source /usr/local/bin/flux /usr/local/bin/flux
 
 # Ensure all binaries have the correct execution permissions
 RUN chmod +x /usr/local/bin/kubectl /usr/local/bin/kustomize /usr/local/bin/flux /usr/bin/gh
