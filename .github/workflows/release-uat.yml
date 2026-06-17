@@ -32,10 +32,10 @@ jobs:
         needs: [approval, validate, security-scan, lint, sbom]
         uses: ./.github/workflows/build.yml
 
-    sit-deploy-status:
+    uat-deploy-status:
         needs: build
-        environment: sit
+        environment: uat
         runs-on: ubuntu-latest
         steps:
-        - name: SIT deployment
-          run: echo "Deploy to SIT environment completed successfully. Please proceed with testing."
+        - name: UAT deployment
+          run: echo "Deploy to UAT environment completed successfully. Please proceed with testing."
