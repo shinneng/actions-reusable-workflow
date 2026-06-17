@@ -3,9 +3,9 @@ on:
   deployment_status:
     
 jobs:
-    # Only run if the triggering event was a SUCCESSFUL deployment to the 'sit' environment
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'sit'
     approval:
+        # Only run if the triggering event was a SUCCESSFUL deployment to the 'sit' environment
+        if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'uat'
         runs-on: ubuntu-latest
         environment: uat-approval
         steps:

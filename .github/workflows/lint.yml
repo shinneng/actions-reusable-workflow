@@ -11,3 +11,5 @@ jobs:
               uses: actions/checkout@v6
             - name: Run Code Lint
               uses: super-linter/super-linter@v5
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
