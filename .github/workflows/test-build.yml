@@ -17,19 +17,19 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
+    runs-on: ${{ inputs.runs_on }}
     outputs:
-      artifact_name: ${{ steps.artifact.outputs.name}}
+      artifact_name: ${{ steps.artifact.outputs.name }}
       artifact_path: ${{ steps.artifact.outputs.path }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       
       - name: build artifact
         run: echo "Hello World" > hello.txt
       
       - name: Archive build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: hello.txt
@@ -37,14 +37,14 @@ jobs:
       # Output artifact name and path
       - id: artifact
         run: |
-          echo "name=my-artifact" >> $GITHUB_OUTPUT
-          echo "path=hello.txt" >> $GITHUB_OUTPUT
+          echo "name=my-artifact" >> "$GITHUB_OUTPUT"
+          echo "path=hello.txt" >> "$GITHUB_OUTPUT"
       
   test:
     runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: Running tests
         run: echo "this is a test"
 
@@ -52,11 +52,11 @@ jobs:
 
   deploy-uat:
     needs: [build, test]
-    runs-on: ${{ inputs.runs_on }} # You can define the runs-on as an input or hardcode it as needed
+    runs-on: ${{ inputs.runs_on }}
     if: ${{ inputs.deploy_uat == true }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Deploy to UAT
         run: echo "branch to deploy ${{ inputs.branch_to_deploy }}"
