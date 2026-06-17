@@ -1,9 +1,14 @@
 {
   "extends": ["config:base"],
-  "dockerfile": {
-    "enabled": true,
-    "schedule": ["at any time"]
-  },
+  "enabledManagers": ["dockerfile"],
+  "packageRules": [
+    {
+      "managers": ["dockerfile"],
+      "matchManagers": ["dockerfile"],
+      "matchPackagePatterns": ["^.*$"],
+      "schedule": ["at any time"]
+    }
+  ],
   "timezone": "UTC",
   "labels": ["renovate"],
   "prConcurrentLimit": 5
