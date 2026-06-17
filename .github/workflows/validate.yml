@@ -1,7 +1,7 @@
 name: Validate
 on:
   workflow_call:
-    
+  workflow_dispatch:
     
 jobs:
   validate:
@@ -10,6 +10,5 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Validate
-        run: |
-          echo "Validate branch: ${{ github.ref }}"
+      - name: Validate Renovate Config
+        run: npx --yes --package renovate -- renovate-config-validator
