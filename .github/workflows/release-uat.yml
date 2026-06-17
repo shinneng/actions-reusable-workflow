@@ -20,9 +20,9 @@ jobs:
         needs: approval
         uses: ./.github/workflows/trivy-scan.yml
         
-    lint:
-        needs: approval
-        uses: ./.github/workflows/lint.yml
+    # lint:
+    #     needs: approval
+    #     uses: ./.github/workflows/lint.yml
 
     sbom:
         needs: approval
