@@ -1,6 +1,6 @@
 # Stage 1: Pull GitOps binaries from reliable upstream source images
 FROM line/kubectl-kustomize:1.31.0-5.7.1 AS k8s-source
-FROM fluxcd/flux-cli:v2.7.5 AS flux-source
+FROM fluxcd/flux-cli:v2.9.0 AS flux-source
 
 # Stage 2: Target the official GitHub Actions Runner base image
 FROM ghcr.io/actions/actions-runner:2.329.0
