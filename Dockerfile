@@ -3,7 +3,7 @@ FROM line/kubectl-kustomize:1.31.0-5.7.1 AS k8s-source
 FROM fluxcd/flux-cli:v2.9.4 AS flux-source
 
 # Stage 2: Target the official GitHub Actions Runner base image
-FROM ghcr.io/actions/actions-runner:2.329.0
+FROM ghcr.io/actions/actions-runner:2.336.0
 
 # Switch to root to perform software installation
 USER root
