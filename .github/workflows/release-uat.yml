@@ -1,0 +1,25 @@
+name: "2. Release to UAT"
+on:
+  deployment_status:
+    
+jobs:
+    approval:
+        # Only run if the triggering event was a SUCCESSFUL deployment to the 'sit' environment
+        if: "github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'sit'"
+        runs-on: ubuntu-latest
+        environment: uat-approval
+        steps:
+        - name: approval to proceed with UAT deployment
+          run: echo "Waiting for approval to deploy to UAT environment..."
+        
+    release:
+        needs: approval
+        uses: ./.github/workflows/release.yml
+
+    uat-deploy-status:
+        needs: release
+        environment: uat
+        runs-on: ubuntu-latest
+        steps:
+        - name: UAT deployment
+          run: echo "Deploy to UAT environment completed successfully. Please proceed with testing."

@@ -12,6 +12,7 @@ permissions:
   # (not required for the API-driven Renovate action).
   contents: write
   pull-requests: write
+  issues: write # Add this line to allow the workflow to create issues
 
 jobs:
   renovate:

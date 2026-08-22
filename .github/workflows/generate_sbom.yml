@@ -1,0 +1,38 @@
+name: Generate SBOM
+
+on: 
+    workflow_call:
+        inputs:
+            sbom-format:
+                description: 'SBOM output format (e.g. spdx-json, cyclonedx-json, spdx, json)'
+                required: false
+                type: string
+                default: 'spdx-json'
+            sbom-output-filename:
+                description: 'Output filename for the SBOM'
+                required: false
+                type: string
+                default: 'sbom.json'
+
+jobs:
+    generate-sbom:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Generate SBOM (syft)
+              env:
+                SBOM_FORMAT: ${{ inputs['sbom-format'] || 'spdx-json' }}
+                SBOM_OUTPUT: ${{ inputs['sbom-output-filename'] || 'sbom.json' }}
+              run: |
+                echo "Generating SBOM (format=${SBOM_FORMAT}) -> ${SBOM_OUTPUT}"
+                # Run syft in a container and write SBOM to stdout, then save to file
+                docker run --rm -v "${{ github.workspace }}":/src -w /src anchore/syft:latest . -o "${SBOM_FORMAT}" | tee "${SBOM_OUTPUT}"
+                echo "SBOM saved to ${SBOM_OUTPUT}"
+
+            - name: Upload SBOM artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: sbom
+                path: ${{ inputs['sbom-output-filename'] || 'sbom.json' }}

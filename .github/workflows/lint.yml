@@ -1,0 +1,20 @@
+name: Lint
+
+on:
+  workflow_call:
+  workflow_dispatch:
+        
+jobs:
+    code-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+             
+            - name: Check GitHub Actions
+              uses: raven-actions/actionlint@v2
+
+            - name: Check Dockerfile
+              uses: hadolint/hadolint-action@v3.1.0
+              with:
+                dockerfile: Dockerfile

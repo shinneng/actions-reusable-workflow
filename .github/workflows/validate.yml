@@ -1,0 +1,14 @@
+name: Validate
+on:
+  workflow_call:
+  workflow_dispatch:
+    
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Validate Renovate Config
+        run: npx --yes --package renovate -- renovate-config-validator

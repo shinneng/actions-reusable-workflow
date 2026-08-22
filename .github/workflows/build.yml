@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile_path:
+        description: 'Path to the Dockerfile to use for the build'
+        required: false
+        type: string
+        default: '.'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Build
+        run: |
+          docker build ${{ inputs.dockerfile_path }} -t my-image:${{ github.sha }}

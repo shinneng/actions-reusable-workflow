@@ -1,0 +1,26 @@
+name: "1. Release to SIT"
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+    approval:
+        runs-on: ubuntu-latest
+        environment: sit-approval
+        steps:
+        - name: approval to proceed with SIT deployment
+          run: echo "Waiting for approval to deploy to SIT environment..."
+            
+    release:
+        needs: approval
+        uses: ./.github/workflows/release.yml
+
+    sit-deploy-status:
+        needs: release
+        environment: sit
+        runs-on: ubuntu-latest
+        steps:
+        - name: SIT deployment
+          run: echo "Deploy to SIT environment completed successfully. Please proceed with testing."
