@@ -4,7 +4,7 @@ FROM fluxcd/flux-cli:v2.9.6 AS flux-source
 
 
 # Stage 2: Target the official GitHub Actions Runner base image
-FROM ghcr.io/actions/actions-runner:2.336.0
+FROM ghcr.io/actions/actions-runner:2.338.0
 
 # Switch to root to perform software installation
 USER root
